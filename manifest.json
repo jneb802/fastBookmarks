@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Fast Bookmarks",
   "version": "1.0.0",
-  "description": "Navigate to bookmarks quickly with Tab key cycling",
+  "description": "Navigate bookmarks faster with hotkeys",
   "permissions": [
     "bookmarks",
     "activeTab",
