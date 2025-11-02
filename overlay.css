@@ -134,11 +134,13 @@ img.item-icon {
 }
 
 .item-content {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex: 1 !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  line-height: normal !important;
+  font-size: initial !important;
 }
 
 .item-title {
@@ -150,8 +152,12 @@ img.item-icon {
   text-overflow: ellipsis !important;
   display: block !important;
   visibility: visible !important;
+  line-height: 1.4 !important;
+  opacity: 1 !important;
+  height: auto !important;
+  width: auto !important;
+  flex: 1 !important;
 }
-
 
 .item-url {
   font-size: 12px !important;
@@ -161,6 +167,11 @@ img.item-icon {
   text-overflow: ellipsis !important;
   display: block !important;
   visibility: visible !important;
+  line-height: 1.4 !important;
+  opacity: 1 !important;
+  height: auto !important;
+  width: auto !important;
+  flex: 1 !important;
 }
 
 @media (prefers-color-scheme: dark) {
