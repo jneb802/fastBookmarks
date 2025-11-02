@@ -80,6 +80,7 @@ function showOverlay(bookmarks) {
   
   // Add keyboard event listeners with capture to intercept before other handlers
   document.addEventListener('keydown', handleKeyDown, true);
+  document.addEventListener('keyup', handleKeyUp, true);
 }
 
 // Filter bookmarks based on search query
@@ -165,20 +166,23 @@ function renderBookmarks() {
 function handleKeyDown(event) {
   if (!isOverlayVisible) return;
   
-  // Allow normal typing and backspace in search
+  // STOP ALL EVENTS FROM REACHING THE PAGE IMMEDIATELY
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+  
   const searchInput = document.querySelector('.search-input');
+  
+  // Allow typing in search input (but still blocked from reaching page)
   if (document.activeElement === searchInput) {
     if ((event.key.length === 1 || event.key === 'Backspace') && !event.metaKey && !event.ctrlKey && !event.altKey) {
-      return;
+      return; // Let the input handle it naturally
     }
   }
   
-  // Prevent all handled keys from affecting the page (except Backspace which we handle conditionally)
+  // Now prevent default for navigation keys
   const handledKeys = ['Tab', 'ArrowDown', 'ArrowUp', 'Enter', 'Escape'];
   if (handledKeys.includes(event.key)) {
     event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
   }
   
   switch (event.key) {
@@ -250,6 +254,13 @@ function handleKeyDown(event) {
   }
 }
 
+// Handle keyup to prevent page from receiving events
+function handleKeyUp(event) {
+  if (!isOverlayVisible) return;
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+}
+
 // Update visual selection
 function updateSelection() {
   const items = overlay.querySelectorAll('.bookmark-item');
@@ -296,4 +307,5 @@ function closeOverlay() {
   
   // Remove keyboard event listeners
   document.removeEventListener('keydown', handleKeyDown, true);
+  document.removeEventListener('keyup', handleKeyUp, true);
 }
