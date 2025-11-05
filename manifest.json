@@ -14,7 +14,8 @@
   "commands": {
     "toggle-bookmark-menu": {
       "suggested_key": {
-        "default": "Alt+K"
+        "default": "Alt+K",
+        "mac": "Command+Shift+K"
       },
       "description": "Show bookmark navigation menu"
     }

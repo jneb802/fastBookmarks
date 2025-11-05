@@ -1,5 +1,8 @@
 // Content script for Fast Bookmarks
 
+// Detect if we're running in the extension overlay page
+const isExtensionOverlayPage = location.protocol === 'chrome-extension:' && location.pathname.endsWith('/overlay.html');
+
 let overlay = null;
 let currentIndex = 0;
 let allBookmarks = [];
@@ -280,7 +283,10 @@ function navigateToBookmark(url) {
     action: 'navigate',
     url: url
   });
-  closeOverlay();
+  // Only close overlay if not in extension overlay page (that tab will navigate)
+  if (!isExtensionOverlayPage) {
+    closeOverlay();
+  }
 }
 
 // Navigate to selected bookmark in new tab
@@ -289,6 +295,10 @@ function navigateToBookmarkNewTab(url) {
     action: 'navigateNewTab',
     url: url
   });
+  // Close overlay tab when opened from overlay.html
+  if (isExtensionOverlayPage) {
+    chrome.runtime.sendMessage({ action: 'overlayClosed' });
+  }
   closeOverlay();
 }
 
@@ -308,4 +318,9 @@ function closeOverlay() {
   // Remove keyboard event listeners
   document.removeEventListener('keydown', handleKeyDown, true);
   document.removeEventListener('keyup', handleKeyUp, true);
+  
+  // If running in overlay.html and user dismissed (Escape/backdrop), close the tab
+  if (isExtensionOverlayPage) {
+    chrome.runtime.sendMessage({ action: 'overlayClosed' });
+  }
 }
